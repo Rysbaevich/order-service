@@ -1,9 +1,14 @@
 package kg.orderservice.service.impl;
-import kg.orderservice.dto.request.OrderRequest;
+import kg.orderservice.dto.request.DeliveryByCarRequest;
+import kg.orderservice.dto.request.DeliveryByLorryRequest;
+import kg.orderservice.dto.request.DeliveryByPlaneRequest;
 import kg.orderservice.dto.response.SimpleResponse;
 
 import kg.orderservice.entities.Car;
+import kg.orderservice.entities.Lorry;
 import kg.orderservice.entities.Order;
+import kg.orderservice.entities.Plane;
+import kg.orderservice.enums.DeliveryType;
 import kg.orderservice.repository.DeliveryRepository;
 import kg.orderservice.repository.OrderRepository;
 import kg.orderservice.service.OrderService;
@@ -20,22 +25,45 @@ public class OrderServiceImpl implements OrderService {
     private final PackageService packageService;
     private final OrderRepository orderRepository;
 
-    @Override
-    public SimpleResponse save(OrderRequest orderRequest) {
-
+    private Order createOrder(String whereFrom, String where){
         Order order = new Order();
-        order.setWhereFrom(orderRequest.whereFrom());
-        order.setWhereTo(orderRequest.where());
+        order.setWhereFrom(whereFrom);
+        order.setWhereTo(where);
         orderRepository.save(order);
-        deliveryRepository.save(createCar(orderRequest, order));
-        return new SimpleResponse(HttpStatus.OK, "order successfully saved!!");
+        return order;
     }
 
-    private Car createCar(OrderRequest orderRequest, Order order){
+    @Override
+    public SimpleResponse save(DeliveryByCarRequest deliveryByCarRequest) { //todo with token
         Car car = new Car();
-        car.setAPackage(packageService.save(orderRequest.deliveryRequest().packageRequest()));
-        car.setDeliveryType(orderRequest.deliveryRequest().deliveryType());
-        car.addOrder(order);
-        return car;
+        car.setDeliveryType(DeliveryType.CAR);
+        car.setAPackage(packageService.save(deliveryByCarRequest.packageRequest()));
+        car.addOrder(createOrder(deliveryByCarRequest.whereFrom(), deliveryByCarRequest.where()));
+        deliveryRepository.save(car);
+        return new SimpleResponse(HttpStatus.OK, "Delivery by car successfully created");
+    }
+
+    @Override
+    public SimpleResponse save(DeliveryByLorryRequest deliveryByLorryRequest) {//todo with token
+        Lorry lorry = new Lorry();
+        lorry.setDeliveryType(DeliveryType.LORRY);
+        lorry.addOrder(createOrder(deliveryByLorryRequest.whereFrom(), deliveryByLorryRequest.where()));
+        lorry.setWidth(deliveryByLorryRequest.width());
+        lorry.setHeight(deliveryByLorryRequest.height());
+        lorry.setLength(deliveryByLorryRequest.length());
+        lorry.setLorryBodyType(deliveryByLorryRequest.bodyType());
+        lorry.setDescription(deliveryByLorryRequest.description());
+        deliveryRepository.save(lorry);
+        return new SimpleResponse(HttpStatus.OK, "Delivery by lorry successfully created");
+    }
+
+    @Override
+    public SimpleResponse save(DeliveryByPlaneRequest deliveryByPlaneRequest) {//todo with token
+        Plane plane = new Plane();
+        plane.setDeliveryType(DeliveryType.PLANE);
+        plane.setDescription(deliveryByPlaneRequest.description());
+        plane.addOrder(createOrder(deliveryByPlaneRequest.whereFrom(), deliveryByPlaneRequest.where()));
+        deliveryRepository.save(plane);
+        return new SimpleResponse(HttpStatus.OK, "Delivery by plane successfully created");
     }
 }
