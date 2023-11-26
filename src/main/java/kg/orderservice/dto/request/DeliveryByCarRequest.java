@@ -11,7 +11,5 @@ public record DeliveryByCarRequest(
         LocalDate dispatchDate,
         LocalDate arrivalDate,
         PackageRequest packageRequest
-
-
 ) {
 }

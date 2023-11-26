@@ -4,27 +4,27 @@ import kg.orderservice.dto.request.DeliveryByCarRequest;
 import kg.orderservice.dto.request.DeliveryByLorryRequest;
 import kg.orderservice.dto.request.DeliveryByPlaneRequest;
 import kg.orderservice.dto.response.SimpleResponse;
-import kg.orderservice.service.OrderService;
+import kg.orderservice.service.DeliveryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/order")
-public class OrderController {
-    private final OrderService orderService;
+@RequestMapping("/api/v1/order/delivery")
+public class DeliveryController {
+    private final DeliveryService deliveryService;
 
-    @PostMapping("/delivery_car")
+    @PostMapping("/car")
     public SimpleResponse save(@RequestBody DeliveryByCarRequest deliveryByCarRequest){
-        return orderService.save(deliveryByCarRequest);
+        return deliveryService.save(deliveryByCarRequest);
     }
-    @PostMapping("/delivery_plane")
+    @PostMapping("/plane")
     public SimpleResponse save(@RequestBody DeliveryByPlaneRequest deliveryByPlaneRequest){
-        return orderService.save(deliveryByPlaneRequest);
+        return deliveryService.save(deliveryByPlaneRequest);
     }
-    @PostMapping("/delivery_lorry")
+    @PostMapping("/lorry")
     public SimpleResponse save(@RequestBody DeliveryByLorryRequest deliveryByLorryRequest){
-        return orderService.save(deliveryByLorryRequest);
+        return deliveryService.save(deliveryByLorryRequest);
     }
 
 }

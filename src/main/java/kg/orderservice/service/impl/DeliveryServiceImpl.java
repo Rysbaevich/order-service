@@ -11,7 +11,7 @@ import kg.orderservice.entities.Plane;
 import kg.orderservice.enums.DeliveryType;
 import kg.orderservice.repository.DeliveryRepository;
 import kg.orderservice.repository.OrderRepository;
-import kg.orderservice.service.OrderService;
+import kg.orderservice.service.DeliveryService;
 import kg.orderservice.service.PackageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class OrderServiceImpl implements OrderService {
+public class DeliveryServiceImpl implements DeliveryService {
 
     private final DeliveryRepository deliveryRepository;
     private final PackageService packageService;
