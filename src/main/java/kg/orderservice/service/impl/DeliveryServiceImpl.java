@@ -61,6 +61,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     public SimpleResponse save(DeliveryByPlaneRequest deliveryByPlaneRequest) {//todo with token
         Plane plane = new Plane();
         plane.setDeliveryType(DeliveryType.PLANE);
+        plane.setAPackage(packageService.save(deliveryByPlaneRequest.packageRequest()));
         plane.setDescription(deliveryByPlaneRequest.description());
         plane.addOrder(createOrder(deliveryByPlaneRequest.whereFrom(), deliveryByPlaneRequest.where()));
         deliveryRepository.save(plane);

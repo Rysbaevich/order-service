@@ -10,6 +10,7 @@ public record DeliveryByPlaneRequest(
         String where,
         LocalDate shippingDate,
         LocalDate arriveDate,
+        PackageRequest packageRequest,
         String description
 
 ) {
