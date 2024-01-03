@@ -1,12 +1,14 @@
 package kg.orderservice.dto.request;
 
 import kg.orderservice.enums.PackageType;
+import lombok.Builder;
 
+@Builder
 public record PackageRequest (
-        PackageType packageType,
         Double weight,
         String size,
         String format,
-        String other
+        String other,
+        PackageType packageType
 ){
 }
